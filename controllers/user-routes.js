@@ -16,7 +16,23 @@ router.get("/", (req, res) => {
 router.get("/:id", ({ params }, res) => {
   User.findOne({ _id: params.id })
     .select("-__v")
-    .then((user) => res.json(user))
+    .populate([
+      {
+        path: "thoughts",
+        select: "-__v",
+      },
+      {
+        path: "friends",
+        select: "-__v",
+      },
+    ])
+    .then((user) => {
+      if (!user) {
+        res.status(404).json({ message: "Invalid id" });
+        return;
+      }
+      res.json(user);
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
