@@ -60,6 +60,7 @@ router.delete("/:id", ({ params }, res) => {
         res.status(404).json({ message: "No user found with that id." });
         return;
       }
+      // delete the user's thoughts too
       return Thought.deleteMany({ userId: deletedUser._id });
     })
     .then((deletedUser) => res.json(deletedUser))
