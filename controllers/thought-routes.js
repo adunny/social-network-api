@@ -4,6 +4,7 @@ const { User, Thought } = require("../models");
 // get all thoughts
 router.get("/", (req, res) => {
   Thought.find({})
+    .select("-__v")
     .then((thoughts) => res.json(thoughts))
     .catch((err) => {
       console.log(err);
